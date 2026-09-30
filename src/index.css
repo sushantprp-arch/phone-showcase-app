@@ -43,7 +43,7 @@
 }
 
 /* CHANGE VALUES FOR THEME */
-/* Mobius: obsidian stage + electric azure, with titanium gold for warmth. */
+/* Phone Showcase App: obsidian stage, electric azure, titanium gold. */
 :root {
   --radius: 0.9rem;
   --background: oklch(0.155 0.013 265);
@@ -78,7 +78,7 @@
   --sidebar-border: oklch(1 0 0 / 11%);
   --sidebar-ring: oklch(0.745 0.142 236 / 55%);
 
-  /* Mobius brand extras (used through var(--x) arbitrary values) */
+  /* Brand extras (used through var(--x) arbitrary values) */
   --brand: oklch(0.745 0.142 236);
   --brand-deep: oklch(0.5 0.14 250);
   --titanium: oklch(0.845 0.095 85);
@@ -137,7 +137,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Mobius theme utilities
+   Theme utilities
 
    These wrap the brand custom properties above. Declaring them as real
    Tailwind utilities (instead of writing `border-[var(--edge)]`) keeps the
@@ -177,7 +177,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Mobius motion + surface utilities
+   Motion + surface utilities
 --------------------------------------------------------------------------- */
 
 html {
@@ -189,7 +189,7 @@ body {
   overflow-x: hidden;
 }
 
-@keyframes mobius-marquee {
+@keyframes showcase-marquee {
   from {
     transform: translateX(0);
   }
@@ -198,7 +198,7 @@ body {
   }
 }
 
-@keyframes mobius-float {
+@keyframes showcase-float {
   0%,
   100% {
     transform: translateY(0);
@@ -208,7 +208,7 @@ body {
   }
 }
 
-@keyframes mobius-sheen {
+@keyframes showcase-sheen {
   0% {
     transform: translateX(-130%) skewX(-14deg);
   }
@@ -218,7 +218,7 @@ body {
   }
 }
 
-@keyframes mobius-scan {
+@keyframes showcase-scan {
   0% {
     transform: translateY(-115%);
   }
@@ -227,7 +227,7 @@ body {
   }
 }
 
-@keyframes mobius-pulse {
+@keyframes showcase-pulse {
   0% {
     opacity: 0.55;
     transform: scale(0.88);
@@ -242,7 +242,7 @@ body {
   }
 }
 
-@keyframes mobius-grid {
+@keyframes showcase-grid {
   from {
     background-position: 0 0;
   }
@@ -251,29 +251,29 @@ body {
   }
 }
 
-@keyframes mobius-spin {
+@keyframes showcase-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
 .animate-marquee {
-  animation: mobius-marquee 34s linear infinite;
+  animation: showcase-marquee 34s linear infinite;
 }
 .animate-float {
-  animation: mobius-float 6.5s ease-in-out infinite;
+  animation: showcase-float 6.5s ease-in-out infinite;
 }
 .animate-sheen {
-  animation: mobius-sheen 6s ease-in-out infinite;
+  animation: showcase-sheen 6s ease-in-out infinite;
 }
 .animate-scan {
-  animation: mobius-scan 4.6s ease-in-out infinite;
+  animation: showcase-scan 4.6s ease-in-out infinite;
 }
 .animate-pulse-ring {
-  animation: mobius-pulse 3.2s ease-out infinite;
+  animation: showcase-pulse 3.2s ease-out infinite;
 }
 .animate-spin-slow {
-  animation: mobius-spin 22s linear infinite;
+  animation: showcase-spin 22s linear infinite;
 }
 
 .animation-delay-1 {
@@ -303,27 +303,13 @@ body {
     linear-gradient(to right, oklch(1 0 0 / 5.5%) 1px, transparent 1px),
     linear-gradient(to bottom, oklch(1 0 0 / 5.5%) 1px, transparent 1px);
   background-size: 48px 48px;
-  animation: mobius-grid 7s linear infinite;
+  animation: showcase-grid 7s linear infinite;
 }
 
 .glass-panel {
   background: oklch(0.215 0.015 265 / 62%);
   backdrop-filter: blur(14px) saturate(150%);
   -webkit-backdrop-filter: blur(14px) saturate(150%);
-}
-
-.stage-glow::before {
-  content: "";
-  position: absolute;
-  inset: 18% 14% 4%;
-  border-radius: 9999px;
-  background: radial-gradient(
-    closest-side,
-    var(--halo),
-    transparent 72%
-  );
-  filter: blur(18px);
-  pointer-events: none;
 }
 
 .hide-scrollbar {

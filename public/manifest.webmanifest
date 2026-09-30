@@ -1,11 +1,11 @@
 {
-  "name": "freebuff.com application",
-  "short_name": "freebuff.com",
-  "description": "freebuff.com application",
+  "name": "Phone Showcase App",
+  "short_name": "Phone Showcase",
+  "description": "A personal catalog of iPhone and Samsung Galaxy flagships with verified specifications and a saved-device dashboard.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#0b0d16",
+  "theme_color": "#0b0d16",
   "icons": [
     {
       "src": "/logo.svg",

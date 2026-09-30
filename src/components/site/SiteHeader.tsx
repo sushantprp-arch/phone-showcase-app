@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { to: "/", label: "Home" },
   { to: "/gallery", label: "Gallery" },
+  { to: "/dashboard", label: "Dashboard" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -44,11 +45,14 @@ export function SiteHeader() {
               <span className="pointer-events-none absolute inset-0 -translate-x-full bg-white/30 transition-transform duration-700 group-hover:translate-x-full" />
             </span>
             <span className="flex flex-col leading-none">
-              <span className="text-[15px] font-semibold tracking-[0.24em] text-foreground">
-                MOBIUS
+              <span className="text-[13px] font-semibold tracking-[0.18em] text-foreground">
+                PHONE SHOWCASE
+                <span className="ml-1.5 text-[10px] font-medium tracking-[0.2em] text-muted-foreground">
+                  APP
+                </span>
               </span>
-              <span className="mt-0.5 text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
-                iPhone · Galaxy
+              <span className="mt-1 text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
+                Device catalog
               </span>
             </span>
           </Link>
@@ -87,7 +91,7 @@ export function SiteHeader() {
               Sign in
             </Link>
             <Button asChild size="sm" className="hidden rounded-full px-4 sm:inline-flex">
-              <Link to="/contact">Visit the studio</Link>
+              <Link to="/dashboard">Your dashboard</Link>
             </Button>
             <button
               type="button"
@@ -138,7 +142,7 @@ export function SiteHeader() {
                   Sign in
                 </Link>
                 <Button asChild size="sm" className="ml-auto rounded-full px-4">
-                  <Link to="/contact">Visit the studio</Link>
+                  <Link to="/dashboard">Your dashboard</Link>
                 </Button>
               </div>
             </div>

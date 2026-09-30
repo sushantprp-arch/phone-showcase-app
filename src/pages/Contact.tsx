@@ -3,16 +3,15 @@ import {
   ArrowRight,
   CheckCircle2,
   Clock,
-  Headphones,
   Loader2,
   Mail,
   MapPin,
-  Phone,
+  RefreshCw,
   Send,
 } from "lucide-react";
 import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import { Link } from "react-router";
-import { Reveal, Section, Eyebrow } from "@/components/site/Section";
+import { Eyebrow, Reveal, Section } from "@/components/site/Section";
 import {
   Accordion,
   AccordionContent,
@@ -30,66 +29,68 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { phones } from "@/data/phones";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const TOPICS = [
-  "Book a hands-on demo",
-  "Trade-in valuation",
-  "Compare iPhone vs Galaxy",
-  "Repair or warranty",
+  "Request a device",
+  "Correct a specification",
+  "Report a photo issue",
   "Something else",
 ];
 
 const DETAILS = [
-  {
-    icon: MapPin,
-    label: "Studio",
-    value: "18 Marlow Yard, Unit 4\nBengaluru 560001",
-  },
-  { icon: Phone, label: "Call us", value: "+91 80 4000 2020" },
-  { icon: Mail, label: "Email", value: "hello@mobiusstudio.dev" },
-  { icon: Clock, label: "Open", value: "Mon–Sat, 10:00 – 20:00" },
+  { icon: Mail, label: "Email", value: "catalog@phoneshowcase.app" },
+  { icon: Clock, label: "Response time", value: "Usually within a day" },
+  { icon: MapPin, label: "Maintained from", value: "Bengaluru, India" },
+  { icon: RefreshCw, label: "Updated", value: "As new flagships are released" },
 ];
 
-const LOCATIONS = [
+const COVERAGE = [
   {
-    city: "Bengaluru",
-    address: "18 Marlow Yard, Unit 4",
-    note: "Flagship studio · all 11 devices on the floor",
+    title: "Apple line",
+    count: phones.filter((phone) => phone.brand === "Apple").length,
+    body: "Every iPhone in the catalog, from the iPhone 14 Pro through the iPhone 15 Pro Max.",
   },
   {
-    city: "Mumbai",
-    address: "Level 3, Dock Lane, Lower Parel",
-    note: "Trade-in bar · 9 foldables and Pro models",
+    title: "Samsung line",
+    count: phones.filter((phone) => phone.brand === "Samsung").length,
+    body: "Galaxy S, the foldables and the last of the Note line, all with verified figures.",
   },
   {
-    city: "Hyderabad",
-    address: "42 Banyan Court, Jubilee Hills",
-    note: "Service desks · repairs and battery swaps",
+    title: "Foldables",
+    count: phones.filter((phone) => phone.tags.includes("Foldable")).length,
+    body: "The Galaxy Z Fold 4 and the original Z Flip, kept side by side for comparison.",
   },
+];
+
+const MAINTAINED = [
+  "Your note reaches the person who keeps this catalog, not a support queue.",
+  "The figure is checked against the manufacturer's published specification.",
+  "The entry is corrected, and the change shows up in the catalog immediately.",
 ];
 
 const FAQS = [
   {
-    q: "Do I need an appointment to try the devices?",
-    a: "Walk-ins are welcome, but a booked slot means the exact phones you want are charged, wiped and waiting with your SIM ready. Slots are 30 minutes and free.",
+    q: "Where do the specifications come from?",
+    a: "Every figure is taken from the manufacturer's published specification sheet and re-checked before the entry goes into the catalog. Launch prices are the prices announced at release, not current retail prices.",
   },
   {
-    q: "Can I trade in a phone bought somewhere else?",
-    a: "Yes. We grade any working iPhone or Galaxy in about ten minutes, then credit the value directly against your new device. Bring a charger and the original box if you have it.",
+    q: "How current is the catalog?",
+    a: "It covers releases from 2020 through 2024 and currently holds eleven devices. New flagships are added once verified figures and a usable photograph are both available.",
   },
   {
-    q: "How many models can I actually hold?",
-    a: "All eleven in the catalogue are on the floor of the Bengaluru studio, including the foldables. Mumbai and Hyderabad keep a rotating subset — tell us what you want and we will move it to your nearest studio.",
+    q: "Can I ask for a device that is missing?",
+    a: "Yes, and that is the most common reason to use this page. Send the model name and it gets added as soon as the specification sheet and photograph are ready.",
   },
   {
-    q: "Do you service phones bought elsewhere?",
-    a: "We do. Battery replacements, screen repairs and data migration are available on out-of-warranty devices, usually same day.",
+    q: "Are the photographs licensed?",
+    a: "Yes. Each entry uses freely licensed product photography from Wikimedia Commons, credited in the footer. No marketing renders are used.",
   },
   {
-    q: "Is the 24-month cover included or extra?",
-    a: "Included on every device bought from Mobius. It covers one accidental-damage repair, battery health checks and a loaner phone while yours is in service.",
+    q: "What does starring a device actually do?",
+    a: "It saves that entry to your own dashboard against your sign-in, where it stays until you remove it. Nothing is shared or published anywhere.",
   },
 ];
 
@@ -98,7 +99,6 @@ type Status = "idle" | "submitting" | "sent";
 interface FormState {
   name: string;
   email: string;
-  phone: string;
   topic: string;
   message: string;
 }
@@ -106,7 +106,6 @@ interface FormState {
 const INITIAL: FormState = {
   name: "",
   email: "",
-  phone: "",
   topic: TOPICS[0],
   message: "",
 };
@@ -125,13 +124,11 @@ export default function Contact() {
 
   const validate = (values: FormState) => {
     const next: Partial<Record<keyof FormState, string>> = {};
-    if (values.name.trim().length < 2) next.name = "Tell us who we should ask for.";
+    if (values.name.trim().length < 2) next.name = "Add a name to reply to.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(values.email.trim()))
-      next.email = "Enter an email we can actually reply to.";
-    if (values.phone.trim() && values.phone.trim().length < 7)
-      next.phone = "That number looks too short.";
+      next.email = "Enter an email address that can receive a reply.";
     if (values.message.trim().length < 12)
-      next.message = "A sentence or two helps us prepare.";
+      next.message = "One sentence about the device is enough.";
     return next;
   };
 
@@ -157,18 +154,14 @@ export default function Contact() {
       {/* ------------------------------------------------------ Page header */}
       <Section className="pt-14 pb-10 md:pt-20">
         <Reveal className="max-w-2xl">
-          <Eyebrow>
-            <Headphones className="size-3.5" />
-            Talk to the studio
-          </Eyebrow>
+          <Eyebrow>Contact</Eyebrow>
           <h1 className="mt-6 text-4xl leading-tight font-semibold tracking-tight text-balance sm:text-5xl">
-            Book a slot and{" "}
-            <span className="text-gradient">hold the hardware</span>
+            Keep the <span className="text-gradient">catalog accurate</span>
           </h1>
           <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Tell us which devices you want on the table and what you are
-            upgrading from. We reply within one working day, usually much
-            sooner.
+            This catalog is maintained by one person. Send a note about a device
+            that is missing, a figure that looks wrong, or a photograph that
+            will not load.
           </p>
         </Reveal>
       </Section>
@@ -191,27 +184,27 @@ export default function Contact() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.45, ease: EASE }}
-                    className="relative flex min-h-[26rem] flex-col items-center justify-center text-center"
+                    className="relative flex min-h-[24rem] flex-col items-center justify-center text-center"
                   >
                     <motion.span
                       initial={{ scale: 0.4, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ delay: 0.1, type: "spring", stiffness: 220, damping: 16 }}
-                      className="grid size-16 place-items-center rounded-full border border-[var(--brand)]/40 bg-[var(--brand)]/15 text-brand"
+                      className="grid size-16 place-items-center rounded-full border border-brand/40 bg-brand/15 text-brand"
                     >
                       <CheckCircle2 className="size-8" />
                     </motion.span>
                     <h2 className="mt-6 text-2xl font-semibold tracking-tight">
-                      Request received, {form.name.split(" ")[0] || "friend"}
+                      Note received, {form.name.split(" ")[0] || "friend"}
                     </h2>
                     <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-                      We will email {form.email} with two or three slot options
-                      and confirm which devices to have charged. Nothing has been
-                      charged or reserved yet.
+                      A reply will go to {form.email}. Anything about a
+                      specification gets checked against the manufacturer&apos;s
+                      sheet before the entry changes.
                     </p>
                     <div className="mt-7 flex flex-wrap justify-center gap-3">
                       <Button className="rounded-full" onClick={reset}>
-                        Send another message
+                        Send another note
                       </Button>
                       <Button
                         asChild
@@ -219,7 +212,7 @@ export default function Contact() {
                         className="rounded-full border-edge bg-white/[0.03]"
                       >
                         <Link to="/gallery">
-                          Back to the gallery
+                          Back to the catalog
                           <ArrowRight className="size-4" />
                         </Link>
                       </Button>
@@ -237,12 +230,7 @@ export default function Contact() {
                     className="relative space-y-5"
                   >
                     <div className="grid gap-5 sm:grid-cols-2">
-                      <Field
-                        id="name"
-                        label="Your name"
-                        error={errors.name}
-                        className="sm:col-span-1"
-                      >
+                      <Field id="name" label="Your name" error={errors.name}>
                         <Input
                           id="name"
                           name="name"
@@ -268,51 +256,34 @@ export default function Contact() {
                           className="border-edge bg-white/[0.03]"
                         />
                       </Field>
-
-                      <Field
-                        id="phone"
-                        label="Phone"
-                        hint="optional"
-                        error={errors.phone}
-                      >
-                        <Input
-                          id="phone"
-                          name="phone"
-                          value={form.phone}
-                          onChange={update("phone")}
-                          placeholder="+91 98••• •••••"
-                          autoComplete="tel"
-                          className="border-edge bg-white/[0.03]"
-                        />
-                      </Field>
-
-                      <Field id="topic" label="What do you need?">
-                        <Select
-                          value={form.topic}
-                          onValueChange={(value) =>
-                            setForm((prev) => ({ ...prev, topic: value }))
-                          }
-                        >
-                          <SelectTrigger
-                            id="topic"
-                            className="w-full border-edge bg-white/[0.03]"
-                          >
-                            <SelectValue placeholder="Choose a topic" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {TOPICS.map((topic) => (
-                              <SelectItem key={topic} value={topic}>
-                                {topic}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </Field>
                     </div>
+
+                    <Field id="topic" label="What is this about?">
+                      <Select
+                        value={form.topic}
+                        onValueChange={(value) =>
+                          setForm((prev) => ({ ...prev, topic: value }))
+                        }
+                      >
+                        <SelectTrigger
+                          id="topic"
+                          className="w-full border-edge bg-white/[0.03]"
+                        >
+                          <SelectValue placeholder="Choose a topic" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {TOPICS.map((topic) => (
+                            <SelectItem key={topic} value={topic}>
+                              {topic}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </Field>
 
                     <Field
                       id="message"
-                      label="Which devices, and what are you upgrading from?"
+                      label="Which device, and what should change?"
                       error={errors.message}
                     >
                       <Textarea
@@ -321,7 +292,7 @@ export default function Contact() {
                         value={form.message}
                         onChange={update("message")}
                         rows={5}
-                        placeholder="I want to compare the iPhone 15 Pro Max with the Galaxy S24 Ultra, and trade in an iPhone 12."
+                        placeholder="The Galaxy Z Flip 6 is missing from the catalog, and the battery figure on the S23 looks wrong."
                         aria-invalid={Boolean(errors.message)}
                         className="resize-none border-edge bg-white/[0.03]"
                       />
@@ -329,8 +300,8 @@ export default function Contact() {
 
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                       <p className="text-xs leading-relaxed text-muted-foreground">
-                        This demo form does not send data anywhere yet — it
-                        confirms your request locally.
+                        This form confirms locally for now — it does not send
+                        anything yet.
                       </p>
                       <Button
                         type="submit"
@@ -345,7 +316,7 @@ export default function Contact() {
                           </>
                         ) : (
                           <>
-                            Send request
+                            Send note
                             <Send className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                           </>
                         )}
@@ -361,7 +332,7 @@ export default function Contact() {
             <div className="flex h-full flex-col gap-4">
               <div className="rounded-3xl border border-edge bg-card/50 p-6">
                 <h2 className="text-base font-semibold tracking-tight">
-                  Studio details
+                  Details
                 </h2>
                 <dl className="mt-5 space-y-4">
                   {DETAILS.map((detail) => (
@@ -373,7 +344,7 @@ export default function Contact() {
                         <dt className="text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
                           {detail.label}
                         </dt>
-                        <dd className="mt-0.5 text-sm whitespace-pre-line text-foreground">
+                        <dd className="mt-0.5 text-sm text-foreground">
                           {detail.value}
                         </dd>
                       </div>
@@ -384,14 +355,10 @@ export default function Contact() {
 
               <div className="rounded-3xl border border-edge bg-gradient-to-br from-white/[0.06] to-transparent p-6">
                 <h2 className="text-base font-semibold tracking-tight">
-                  What happens next
+                  How a correction is handled
                 </h2>
                 <ol className="mt-5 space-y-4">
-                  {[
-                    "We read your note and pick two or three slot options.",
-                    "You choose one, and we charge the devices you asked about.",
-                    "You hold them side by side, no sales script attached.",
-                  ].map((step, index) => (
+                  {MAINTAINED.map((step, index) => (
                     <li key={step} className="flex gap-3.5 text-sm text-muted-foreground">
                       <span className="grid size-6 shrink-0 place-items-center rounded-full border border-edge bg-white/[0.04] text-[11px] font-medium text-foreground">
                         {index + 1}
@@ -406,26 +373,26 @@ export default function Contact() {
         </div>
       </Section>
 
-      {/* -------------------------------------------------------- Locations */}
+      {/* --------------------------------------------------------- Coverage */}
       <Section className="border-y border-edge bg-[var(--stage)]/40">
         <Reveal className="max-w-2xl">
-          <Eyebrow>Find us</Eyebrow>
+          <Eyebrow>Coverage</Eyebrow>
           <h2 className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Three studios, one catalogue
+            What the catalog covers
           </h2>
         </Reveal>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {LOCATIONS.map((location, index) => (
-            <Reveal key={location.city} delay={index * 0.08}>
+          {COVERAGE.map((group, index) => (
+            <Reveal key={group.title} delay={index * 0.08}>
               <div className="group h-full rounded-3xl border border-edge bg-card/50 p-6 transition-colors duration-300 hover:border-white/25">
                 <p className="text-[11px] tracking-[0.2em] text-brand uppercase">
-                  {location.city}
+                  {group.count} {group.count === 1 ? "entry" : "entries"}
                 </p>
                 <p className="mt-3 text-base font-medium text-foreground">
-                  {location.address}
+                  {group.title}
                 </p>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {location.note}
+                  {group.body}
                 </p>
               </div>
             </Reveal>
@@ -437,13 +404,12 @@ export default function Contact() {
       <Section>
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
           <Reveal>
-            <Eyebrow>FAQ</Eyebrow>
+            <Eyebrow>Questions</Eyebrow>
             <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              Answers before you ask
+              How the catalog works
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Still unsure about something? Send the form and we will answer in
-              plain language, no spec-sheet copy pasting.
+              Anything not answered here can go through the form above.
             </p>
           </Reveal>
 
@@ -475,26 +441,24 @@ export default function Contact() {
 function Field({
   id,
   label,
-  hint,
   error,
   className,
   children,
 }: {
   id: string;
   label: string;
-  hint?: string;
   error?: string;
   className?: string;
   children: ReactNode;
 }) {
   return (
     <div className={cn("space-y-2", className)}>
-      <div className="flex items-baseline justify-between gap-2">
-        <Label htmlFor={id} className="text-xs tracking-[0.08em] text-muted-foreground uppercase">
-          {label}
-        </Label>
-        {hint && <span className="text-[11px] text-muted-foreground/70">{hint}</span>}
-      </div>
+      <Label
+        htmlFor={id}
+        className="text-xs tracking-[0.08em] text-muted-foreground uppercase"
+      >
+        {label}
+      </Label>
       {children}
       <AnimatePresence>
         {error && (

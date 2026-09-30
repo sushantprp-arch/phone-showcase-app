@@ -8,13 +8,11 @@ import {
 import {
   ArrowRight,
   Camera,
-  Handshake,
-  MapPin,
-  Repeat,
-  ShieldCheck,
+  ClipboardCheck,
+  LayoutDashboard,
+  Search,
   Sparkles,
   Star,
-  Wrench,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
@@ -33,26 +31,29 @@ const featured = FEATURED_IDS.map(
 
 const MARQUEE = phones.map((phone) => `${phone.brand} ${phone.name}`);
 
+const FAMILIES = new Set(phones.map((phone) => phone.series)).size;
+const SPEC_FIELDS = phones.length * 6;
+
 const PILLARS = [
   {
+    icon: ClipboardCheck,
+    title: "Verified specifications",
+    body: "Every display, chipset, camera and battery figure is taken from the manufacturer's published sheet and re-checked before the entry goes in.",
+  },
+  {
     icon: Camera,
-    title: "Spec-checked, not screenshot-checked",
-    body: "Every listing carries the display, silicon, sensor and battery figures we verified against the manufacturer's sheet.",
+    title: "Photographed, not rendered",
+    body: "Each entry carries a real product photograph rather than a marketing render, so the device looks the way it will in the hand.",
   },
   {
-    icon: ShieldCheck,
-    title: "24-month Mobius cover",
-    body: "Battery health guarantee, one accidental-damage repair and a loaner device while yours is in service.",
+    icon: Search,
+    title: "Search that reaches the chipset",
+    body: "Search by model, series, chipset or tag, and filter by brand. What you filtered stays in the address bar, so a view can be bookmarked.",
   },
   {
-    icon: Repeat,
-    title: "Trade-in valued in minutes",
-    body: "Bring your current phone. We grade it on the spot and credit the value straight against your new device.",
-  },
-  {
-    icon: Wrench,
-    title: "Set up before you leave",
-    body: "Data migration, eSIM activation, carrier transfer and a walkthrough of the camera you actually paid for.",
+    icon: Star,
+    title: "Saved to your dashboard",
+    body: "Star any device and it stays on your own dashboard behind your sign-in, ready for the next time you need to compare two of them.",
   },
 ];
 
@@ -62,30 +63,23 @@ const COMPARISON = [
     title: "iPhone",
     tone: "var(--brand)",
     points: [
-      "Titanium Pro bodies with the A17 Pro platform",
-      "Tightest video pipeline in the business",
+      "Titanium Pro bodies running the A17 Pro platform",
+      "The most consistent video pipeline of the two",
       "Long, predictable software support windows",
     ],
-    meta: "4 models on display",
+    meta: `${phones.filter((phone) => phone.brand === "Apple").length} entries in the catalog`,
   },
   {
     brand: "Samsung",
     title: "Galaxy",
     tone: "var(--titanium)",
     points: [
-      "200MP sensors and 5x periscope zoom on Ultra",
-      "S Pen and true split-screen multitasking",
+      "200MP sensors and 5x periscope zoom on the Ultra line",
+      "S Pen input and true split-screen multitasking",
       "Foldables that still feel like the future",
     ],
-    meta: "7 models on display",
+    meta: `${phones.filter((phone) => phone.brand === "Samsung").length} entries in the catalog`,
   },
-];
-
-const STATS = [
-  { value: 11, suffix: "", label: "Devices on the table", decimals: 0 },
-  { value: 42, suffix: "min", label: "Average trade-in visit", decimals: 0 },
-  { value: 4.9, suffix: "/5", label: "Studio rating", decimals: 1 },
-  { value: 24, suffix: "mo", label: "Cover on every device", decimals: 0 },
 ];
 
 /** Counts up once the number scrolls into view. */
@@ -192,7 +186,7 @@ function HeroDevices() {
         className="glass-panel absolute top-6 right-2 z-30 hidden items-center gap-2 rounded-2xl border border-edge px-3 py-2 text-xs shadow-xl md:flex"
       >
         <Sparkles className="size-3.5 text-titanium" />
-        <span>Hands-on in store</span>
+        <span>Specs re-checked</span>
       </motion.div>
       <motion.div
         animate={{ y: [0, 12, 0] }}
@@ -200,7 +194,7 @@ function HeroDevices() {
         className="glass-panel absolute bottom-10 left-0 z-30 hidden items-center gap-2 rounded-2xl border border-edge px-3 py-2 text-xs shadow-xl md:flex"
       >
         <Star className="size-3.5 text-titanium" />
-        <span>4.9 / 5 from 612 visitors</span>
+        <span>{phones.length} devices catalogued</span>
       </motion.div>
     </div>
   );
@@ -217,11 +211,8 @@ export default function Landing() {
           <motion.div variants={staggerParent} initial="hidden" animate="show">
             <motion.div variants={fadeUp}>
               <Eyebrow>
-                <span className="relative flex size-1.5">
-                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-75" />
-                  <span className="relative inline-flex size-1.5 rounded-full bg-brand" />
-                </span>
-                Mobius Device Studio
+                <span className="size-1.5 rounded-full bg-brand" />
+                Phone Showcase App
               </Eyebrow>
             </motion.div>
 
@@ -231,22 +222,22 @@ export default function Landing() {
             >
               Every iPhone and Galaxy,
               <br />
-              <span className="text-gradient">under one roof.</span>
+              <span className="text-gradient">in one catalog.</span>
             </motion.h1>
 
             <motion.p
               variants={fadeUp}
               className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
             >
-              A curated gallery of the two flagship lines worth caring about.
-              Real photography, verified specifications, and a showroom where you
-              can hold all eleven before you decide.
+              A personal reference for the two flagship lines worth keeping
+              track of. Search it by chipset, read the specifications that
+              matter, and star the entries you want to remember.
             </motion.p>
 
             <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-3">
               <Button asChild size="lg" className="group rounded-full px-6">
                 <Link to="/gallery">
-                  Explore the gallery
+                  Browse the catalog
                   <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
@@ -256,9 +247,9 @@ export default function Landing() {
                 variant="outline"
                 className="rounded-full border-edge bg-white/[0.03] px-6"
               >
-                <Link to="/contact">
-                  <MapPin className="size-4" />
-                  Visit the studio
+                <Link to="/dashboard">
+                  <LayoutDashboard className="size-4" />
+                  Open your dashboard
                 </Link>
               </Button>
             </motion.div>
@@ -268,9 +259,9 @@ export default function Landing() {
               className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-edge pt-6"
             >
               {[
-                { value: "11", label: "Devices in stock" },
-                { value: "2", label: "Flagship lines" },
-                { value: "24mo", label: "Cover included" },
+                { value: String(phones.length), label: "Devices catalogued" },
+                { value: String(FAMILIES), label: "Model families" },
+                { value: "2020–24", label: "Release span" },
               ].map((item) => (
                 <div key={item.label}>
                   <dt className="text-2xl font-semibold tracking-tight text-foreground">
@@ -317,9 +308,9 @@ export default function Landing() {
       <Section id="featured">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <Reveal>
-            <Eyebrow>Featured this month</Eyebrow>
+            <Eyebrow>Featured entries</Eyebrow>
             <h2 className="mt-5 max-w-xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              The three devices visitors ask for first
+              Three devices worth starting with
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
@@ -327,7 +318,7 @@ export default function Landing() {
               to="/gallery"
               className="group inline-flex items-center gap-2 text-sm font-medium text-brand"
             >
-              See all {phones.length} devices
+              Browse all {phones.length} devices
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </Reveal>
@@ -348,14 +339,15 @@ export default function Landing() {
       {/* ------------------------------------------------------------ Compare */}
       <Section className="border-y border-edge bg-[var(--stage)]/40">
         <Reveal className="max-w-2xl">
-          <Eyebrow>Pick a side</Eyebrow>
+          <Eyebrow>Two ecosystems</Eyebrow>
           <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            Two philosophies, one showroom
+            One list, two very different approaches
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Apple optimises for the tightest possible integration. Samsung
-            optimises for the widest possible capability. We stock both so you
-            can feel the difference instead of reading about it.
+            Apple optimises for the tightest possible integration between
+            hardware and software. Samsung optimises for the widest possible
+            capability. Both lines stay in the catalog because the contrast is
+            the useful part.
           </p>
         </Reveal>
 
@@ -409,9 +401,9 @@ export default function Landing() {
       {/* ----------------------------------------------------------- Pillars */}
       <Section>
         <Reveal className="max-w-2xl">
-          <Eyebrow>Why Mobius</Eyebrow>
+          <Eyebrow>How it works</Eyebrow>
           <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            A showroom that behaves like a service
+            What this catalog is built on
           </h2>
         </Reveal>
 
@@ -436,10 +428,23 @@ export default function Landing() {
 
       {/* ------------------------------------------------------------- Stats */}
       <Section className="border-y border-edge bg-[var(--stage)]/40 py-16 md:py-20">
+        <Reveal className="mb-10 max-w-2xl">
+          <Eyebrow>Catalog at a glance</Eyebrow>
+        </Reveal>
         <dl className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-          {STATS.map((stat, index) => (
+          {[
+            { value: phones.length, suffix: "", label: "Devices", decimals: 0 },
+            { value: 2, suffix: "", label: "Brands", decimals: 0 },
+            { value: FAMILIES, suffix: "", label: "Model families", decimals: 0 },
+            {
+              value: SPEC_FIELDS,
+              suffix: "",
+              label: "Recorded spec values",
+              decimals: 0,
+            },
+          ].map((stat, index) => (
             <Reveal key={stat.label} delay={index * 0.08}>
-              <dt className="text-3xl font-semibold tracking-tight text-gradient sm:text-4xl">
+              <dt className="text-gradient text-3xl font-semibold tracking-tight sm:text-4xl">
                 <Counter
                   value={stat.value}
                   suffix={stat.suffix}
@@ -465,21 +470,22 @@ export default function Landing() {
             <div className="relative flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-xl">
                 <Eyebrow>
-                  <Handshake className="size-3.5" />
-                  Hands-on, no pressure
+                  <Star className="size-3.5" />
+                  Your shortlist
                 </Eyebrow>
                 <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                  Come hold all eleven devices
+                  Keep the shortlist on your dashboard
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                  Book a 30-minute slot and we will have the phones you care
-                  about charged, wiped and waiting on the table.
+                  Star the devices you are weighing up and they collect on your
+                  own dashboard, so comparing two of them never means scrolling
+                  the whole catalog again.
                 </p>
               </div>
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
                 <Button asChild size="lg" className="group rounded-full px-6">
-                  <Link to="/contact">
-                    Book a demo
+                  <Link to="/dashboard">
+                    Open your dashboard
                     <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </Button>
@@ -489,7 +495,7 @@ export default function Landing() {
                   variant="outline"
                   className="rounded-full border-edge bg-white/[0.03] px-6"
                 >
-                  <Link to="/gallery">Browse gallery</Link>
+                  <Link to="/gallery">Browse the catalog</Link>
                 </Button>
               </div>
             </div>

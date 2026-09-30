@@ -1,6 +1,13 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Cpu, Camera, BatteryCharging, HardDrive, Ruler, Monitor } from "lucide-react";
-import { Link } from "react-router";
+import {
+  BatteryCharging,
+  Camera,
+  Cpu,
+  HardDrive,
+  Monitor,
+  Ruler,
+} from "lucide-react";
+import { SaveDeviceButtonWide } from "@/components/phones/SaveDeviceButton";
 import { DeviceImage } from "@/components/phones/PhoneCard";
 import { Button } from "@/components/ui/button";
 import {
@@ -93,24 +100,23 @@ export function PhoneDetailDialog({
               </dl>
 
               <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-                <Button asChild className="flex-1 rounded-full">
-                  <Link to="/contact">
-                    Book a hands-on demo
-                    <ArrowRight className="size-4" />
-                  </Link>
-                </Button>
+                <SaveDeviceButtonWide
+                  deviceId={phone.id}
+                  deviceName={phone.name}
+                  className="w-full sm:w-auto"
+                />
                 <Button
                   variant="outline"
-                  className="rounded-full"
+                  className="flex-1 rounded-full border-edge bg-white/[0.03]"
                   onClick={onClose}
                 >
                   Keep browsing
                 </Button>
               </div>
 
-              <p className="mt-4 text-[11px] text-muted-foreground">
-                Launch price {phone.launchPrice}. Specs are reference figures
-                from the manufacturer's published data.
+              <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">
+                Launch price {phone.launchPrice}. Figures come from the
+                manufacturer&apos;s published specifications.
               </p>
             </div>
           </div>

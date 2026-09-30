@@ -122,23 +122,28 @@ createRoot(document.getElementById("root")!).render(
           <RouteSyncer />
           <Suspense fallback={<RouteLoading />}>
             <Routes>
-              {/* Public storefront: home, device gallery and contact. */}
+              {/* Public catalog pages plus the signed-in dashboard, all inside
+                  the shared header/footer shell. */}
               <Route element={<SiteLayout />}>
                 <Route path="/" element={<Landing />} />
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <RequireAuth
+                      redirectImmediately
+                      title="Sign in to open your dashboard"
+                      description="Your saved devices are stored against your account."
+                    >
+                      <Dashboard />
+                    </RequireAuth>
+                  }
+                />
               </Route>
               <Route
                 path="/auth"
                 element={<AuthPage redirectAfterAuth="/dashboard" />}
-              />
-              <Route
-                path="/dashboard"
-                element={
-                  <RequireAuth>
-                    <Dashboard />
-                  </RequireAuth>
-                }
               />
               <Route path="*" element={<NotFound />} />
             </Routes>

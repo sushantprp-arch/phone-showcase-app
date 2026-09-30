@@ -101,12 +101,13 @@ export default function Gallery() {
           </Eyebrow>
           <h1 className="mt-6 text-4xl leading-tight font-semibold tracking-tight text-balance sm:text-5xl">
             The full{" "}
-            <span className="text-gradient">iPhone &amp; Galaxy</span> gallery
+            <span className="text-gradient">iPhone and Galaxy</span> catalog
           </h1>
           <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Filter by brand, search by chipset or jump straight to the
-            foldables. Tap any device to see the display, silicon, camera and
-            battery figures we verified in store.
+            Filter by brand, search by model, series or chipset, or jump
+            straight to the foldables. Open any entry for the display, silicon,
+            camera and battery figures, then star it to keep it on your
+            dashboard.
           </p>
         </Reveal>
 
@@ -266,11 +267,11 @@ export default function Gallery() {
             className="rounded-3xl border border-dashed border-edge bg-card/40 px-6 py-16 text-center"
           >
             <h2 className="text-lg font-semibold tracking-tight">
-              Nothing matches that combination
+              No entries match that combination
             </h2>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-              We stock eleven devices across iPhone and Galaxy. Try a different
-              brand, or clear the search and browse everything.
+              The catalog covers eleven devices across iPhone and Galaxy. Try a
+              different brand, or clear the filters and browse everything.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Button className="rounded-full" onClick={clearFilters}>
@@ -281,7 +282,7 @@ export default function Gallery() {
                 variant="outline"
                 className="rounded-full border-edge bg-white/[0.03]"
               >
-                <Link to="/contact">Ask us to source it</Link>
+                <Link to="/contact">Request a device</Link>
               </Button>
             </div>
           </motion.div>

@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 const COLUMNS = [
   {
-    title: "Browse",
+    title: "Catalog",
     links: [
       { label: "Home", to: "/" },
       { label: "Device gallery", to: "/gallery" },
@@ -19,11 +19,11 @@ const COLUMNS = [
     ],
   },
   {
-    title: "Studio",
+    title: "Account",
     links: [
-      { label: "Book a demo", to: "/contact" },
-      { label: "Trade-in help", to: "/contact" },
+      { label: "Your dashboard", to: "/dashboard" },
       { label: "Sign in", to: "/auth" },
+      { label: "Request a device", to: "/contact" },
     ],
   },
 ];
@@ -37,14 +37,17 @@ export function SiteFooter() {
             <span className="grid size-9 place-items-center rounded-xl bg-brand-gradient">
               <Smartphone className="size-4 text-on-brand" />
             </span>
-            <span className="text-[15px] font-semibold tracking-[0.24em]">
-              MOBIUS
+            <span className="text-[13px] font-semibold tracking-[0.18em]">
+              PHONE SHOWCASE
+              <span className="ml-1.5 text-[10px] font-medium tracking-[0.2em] text-muted-foreground">
+                APP
+              </span>
             </span>
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-            A hands-on showroom for the two flagship lines that matter. Every
-            device on this site is photographed, spec-checked and on the table
-            for you to hold.
+            A personal catalog of the iPhone and Galaxy flagships worth
+            remembering. Specifications are checked against the
+            manufacturer&apos;s sheets, and every entry is photographed.
           </p>
         </div>
 
@@ -72,10 +75,10 @@ export function SiteFooter() {
 
       <div className="border-t border-edge">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-5 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <p>© {new Date().getFullYear()} Mobius Device Studio. Demo storefront.</p>
+          <p>© {new Date().getFullYear()} Phone Showcase App.</p>
           <p>
             Product photography via Wikimedia Commons. Apple, iPhone, Samsung
-            and Galaxy are trademarks of their owners.
+            and Galaxy are trademarks of their respective owners.
           </p>
         </div>
       </div>

@@ -1,5 +1,5 @@
 /**
- * Mobius device catalogue.
+ * Phone Showcase App device catalog.
  *
  * Photos are hosted on Wikimedia Commons (freely licensed product shots), so
  * the gallery ships with real phone photography instead of placeholders.
@@ -93,17 +93,17 @@ export const phones: Phone[] = [
     id: "iphone-15-pair",
     name: "iPhone 15 Pro & Pro Max",
     brand: "Apple",
-    series: "Pro pair",
+    series: "Pro",
     released: 2023,
     launchPrice: "$999 – $1,199",
     image: `${COMMONS}/c/ca/IPhone_15_Pro_%26_iPhone_15_Pro_Max.jpg/960px-IPhone_15_Pro_%26_iPhone_15_Pro_Max.jpg`,
     accent: "#9db9ff",
     blurb:
-      "The full Pro line side by side — pick the 6.1-inch balance or the 6.7-inch battery and zoom champion.",
+      "The full Pro line side by side — the 6.1-inch balance or the 6.7-inch battery and zoom champion.",
     highlights: [
       "Both sizes share the A17 Pro platform",
       "Titanium rails, matte back glass",
-      "Compare in store on the same table",
+      "The clearest way to see the size difference",
     ],
     specs: {
       display: '6.1" and 6.7" LTPO XDR, 120Hz',

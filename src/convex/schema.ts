@@ -34,10 +34,14 @@ const schema = defineSchema(
 
     // add other tables here
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    // Devices a signed-in user keeps on their own dashboard.
+    savedDevices: defineTable({
+      userId: v.id("users"),
+      deviceId: v.string(), // matches Phone.id in src/data/phones.ts
+      savedAt: v.number(),
+    })
+      .index("by_user", ["userId"])
+      .index("by_user_device", ["userId", "deviceId"]),
   },
   {
     schemaValidation: false,

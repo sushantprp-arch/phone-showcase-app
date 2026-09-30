@@ -1,3 +1,34 @@
+# Phone Showcase App
+
+A personal catalog of iPhone and Samsung Galaxy flagships. Browse and search
+eleven devices, read specifications that were checked against the
+manufacturer's sheets, and keep a saved shortlist on your own dashboard.
+
+## Routes
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Home: overview, featured entries and the two ecosystems |
+| `/gallery` | Searchable, filterable catalog with a spec dialog per device |
+| `/dashboard` | Signed-in saved devices and catalog statistics (protected) |
+| `/contact` | Send a note about a missing device or a wrong figure |
+| `/auth` | Email OTP or guest sign-in |
+
+## Where things live
+
+- `src/data/phones.ts` — the catalog as one typed array. Adding a device means
+  adding one object; every count in the interface derives from it.
+- `src/components/phones/` — device card, spec dialog, save toggle and the
+  CSS phone mockup used on the home page.
+- `src/convex/savedDevices.ts` — per-user saved device list backing the
+  dashboard, stored in the `savedDevices` table defined in
+  `src/convex/schema.ts`.
+- `src/index.css` — theme tokens, brand utilities and the animation keyframes.
+
+The contact form is frontend-only: it validates and confirms locally, and does
+not send anything yet. Device photography comes from Wikimedia Commons and is
+credited in the footer.
+
 ## Overview
 
 This project uses the following tech stack:

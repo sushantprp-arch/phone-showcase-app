@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, ImageOff } from "lucide-react";
 import { useState } from "react";
+import { SaveDeviceButton } from "@/components/phones/SaveDeviceButton";
 import type { Phone } from "@/data/phones";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -85,14 +86,12 @@ export function PhoneCard({
       aria-label={`View specifications for ${phone.brand} ${phone.name}`}
       className="group relative flex cursor-pointer flex-col overflow-hidden rounded-3xl border border-edge bg-[var(--stage)]/80 outline-none transition-colors duration-300 hover:border-white/25 focus-visible:border-brand"
     >
-      {/* brand + year */}
-      <div className="pointer-events-none absolute inset-x-4 top-4 z-20 flex items-center justify-between">
+      {/* brand chip + save toggle */}
+      <div className="absolute inset-x-4 top-4 z-20 flex items-center justify-between">
         <span className="rounded-full border border-white/12 bg-black/40 px-2.5 py-1 text-[10px] font-medium tracking-[0.14em] text-white/80 uppercase backdrop-blur-sm">
           {phone.brand}
         </span>
-        <span className="rounded-full border border-white/12 bg-black/40 px-2.5 py-1 text-[10px] font-medium text-white/70 backdrop-blur-sm">
-          {phone.released}
-        </span>
+        <SaveDeviceButton deviceId={phone.id} deviceName={phone.name} />
       </div>
 
       <div className="relative overflow-hidden">
@@ -112,7 +111,7 @@ export function PhoneCard({
             {phone.name}
           </h3>
           <p className="mt-0.5 text-xs tracking-[0.12em] text-muted-foreground uppercase">
-            {phone.series} · from {phone.launchPrice}
+            {phone.series} · {phone.released}
           </p>
         </div>
 

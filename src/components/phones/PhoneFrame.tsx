@@ -63,7 +63,7 @@ export function PhoneFrame({
             <div className="absolute inset-x-5 top-1/2 -translate-y-1/2">
               <div className="animate-float rounded-2xl border border-white/12 bg-white/[0.07] p-3.5 backdrop-blur-sm">
                 <p className="text-[9px] tracking-[0.18em] text-white/55 uppercase">
-                  {screenLabel ?? "Mobius Lab"}
+                  {screenLabel ?? "Catalog"}
                 </p>
                 <p className="mt-1.5 text-xl font-semibold text-white">
                   {screenValue ?? "A17 Pro"}
